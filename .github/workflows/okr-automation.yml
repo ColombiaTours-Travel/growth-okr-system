@@ -1,0 +1,291 @@
+name: 🎯 OKR Automation
+
+on:
+  schedule:
+    # Ejecutar todos los días a las 9:00 AM Colombia time (UTC-5)
+    - cron: '0 14 * * *'
+  
+  workflow_dispatch:
+    inputs:
+      action:
+        description: 'Acción a ejecutar'
+        required: true
+        default: 'sync-metrics'
+        type: choice
+        options:
+          - sync-metrics
+          - generate-report
+          - check-health
+          - update-progress
+
+  issues:
+    types: [opened, edited, labeled]
+  
+  issue_comment:
+    types: [created]
+
+env:
+  GA4_PROPERTY_ID: ${{ secrets.GA4_PROPERTY_ID }}
+  GSC_PROPERTY: ${{ secrets.GSC_PROPERTY }}
+  SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+  SUPABASE_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+
+jobs:
+  sync-metrics:
+    name: 📊 Sincronizar Métricas
+    runs-on: ubuntu-latest
+    if: github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && github.event.inputs.action == 'sync-metrics')
+    
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v3
+      
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      
+      - name: Instalar dependencias
+        run: |
+          pip install -r requirements.txt
+      
+      - name: 📊 Sync Google Analytics
+        run: |
+          python scripts/sync-analytics.py
+        env:
+          GA4_CREDENTIALS: ${{ secrets.GA4_CREDENTIALS }}
+      
+      - name: 🔍 Sync Search Console
+        run: |
+          python scripts/sync-search-console.py
+        env:
+          GSC_CREDENTIALS: ${{ secrets.GSC_CREDENTIALS }}
+      
+      - name: 💾 Sync CRM Data
+        run: |
+          python scripts/sync-crm-data.py
+      
+      - name: 📈 Actualizar Progress en Issues
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const metrics = require('./metrics-latest.json');
+            
+            // Buscar issues con label "key-result"
+            const issues = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              labels: 'key-result',
+              state: 'open'
+            });
+            
+            for (const issue of issues.data) {
+              // Extraer métrica del issue
+              const body = issue.body;
+              const metricMatch = body.match(/Métrica Actual: ([\d,]+)/);
+              
+              if (metricMatch) {
+                const currentValue = metrics[issue.title] || 0;
+                const progress = calculateProgress(currentValue);
+                
+                // Actualizar issue con nueva métrica
+                await github.rest.issues.update({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: issue.number,
+                  body: updateMetricInBody(body, currentValue, progress)
+                });
+                
+                // Actualizar proyecto field
+                await updateProjectField(issue.id, 'Progress', progress);
+              }
+            }
+
+  check-okr-health:
+    name: 🏥 Check OKR Health
+    runs-on: ubuntu-latest
+    if: github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && github.event.inputs.action == 'check-health')
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      
+      - name: 🔍 Analizar Estado de OKRs
+        uses: actions/github-script@v6
+        with:
+          script: |
+            // Obtener todos los OKRs
+            const okrs = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              labels: 'objetivo',
+              state: 'open'
+            });
+            
+            const alerts = [];
+            
+            for (const okr of okrs.data) {
+              // Verificar progreso
+              const progress = extractProgress(okr.body);
+              const daysLeft = calculateDaysLeft('2025-03-31');
+              const expectedProgress = calculateExpectedProgress(daysLeft);
+              
+              if (progress < expectedProgress - 10) {
+                alerts.push({
+                  okr: okr.title,
+                  status: '🔴 Off Track',
+                  message: `Progreso actual: ${progress}%, Esperado: ${expectedProgress}%`
+                });
+                
+                // Actualizar label
+                await github.rest.issues.addLabels({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: okr.number,
+                  labels: ['at-risk']
+                });
+              }
+            }
+            
+            // Enviar alertas si hay OKRs en riesgo
+            if (alerts.length > 0) {
+              await sendSlackAlert(alerts);
+            }
+
+  weekly-update:
+    name: 📝 Weekly Update Reminder
+    runs-on: ubuntu-latest
+    if: github.event.schedule == '0 13 * * 1' # Lunes 8 AM Colombia
+    
+    steps:
+      - name: Crear Issue de Update Semanal
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const date = new Date().toISOString().split('T')[0];
+            const weekNumber = getWeekNumber(new Date());
+            
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `📊 Weekly Update - Semana ${weekNumber} - ${date}`,
+              labels: ['weekly-update', 'okr'],
+              assignees: ['yeison-gomez'],
+              body: `## 📊 Update Semanal - Semana ${weekNumber}
+              
+              ### 📈 Progreso OKRs
+              
+              **Objetivo 1: Tráfico Orgánico**
+              - Progreso: __%
+              - Status: 
+              - Highlights:
+              - Blockers:
+              
+              **Objetivo 2: Conversión**
+              - Progreso: __%
+              - Status:
+              - Highlights:
+              - Blockers:
+              
+              **Objetivo 3: Expansión Mercados**
+              - Progreso: __%
+              - Status:
+              - Highlights:
+              - Blockers:
+              
+              ### 🎯 Prioridades Esta Semana
+              1. 
+              2. 
+              3. 
+              
+              ### ⚠️ Riesgos y Problemas
+              - 
+              
+              ### 📊 Métricas Clave
+              - Tráfico: 
+              - Conversión: 
+              - Revenue: 
+              
+              ### 🎉 Wins de la Semana
+              - 
+              
+              cc: @yeison-gomez @growth-team`
+            });
+
+  auto-label:
+    name: 🏷️ Auto Label Issues
+    runs-on: ubuntu-latest
+    if: github.event_name == 'issues'
+    
+    steps:
+      - name: Auto-label por tipo
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const issue = context.payload.issue;
+            const labels = [];
+            
+            // Detectar tipo por título
+            if (issue.title.includes('[OKR-OBJ]')) {
+              labels.push('objetivo', 'okr', 'q1-2025');
+            } else if (issue.title.includes('[KR]')) {
+              labels.push('key-result', 'okr');
+            } else if (issue.title.includes('[INIT]')) {
+              labels.push('iniciativa');
+            } else if (issue.title.includes('[TASK]')) {
+              labels.push('task');
+            }
+            
+            // Detectar área por contenido
+            const body = issue.body.toLowerCase();
+            if (body.includes('seo') || body.includes('orgánico')) {
+              labels.push('area:seo');
+            }
+            if (body.includes('conversión') || body.includes('cro')) {
+              labels.push('area:cro');
+            }
+            if (body.includes('analytics') || body.includes('métricas')) {
+              labels.push('area:analytics');
+            }
+            
+            // Detectar prioridad
+            if (body.includes('p0') || body.includes('crítica')) {
+              labels.push('priority:critical');
+            } else if (body.includes('p1') || body.includes('alta')) {
+              labels.push('priority:high');
+            }
+            
+            if (labels.length > 0) {
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.number,
+                labels: labels
+              });
+            }
+
+  generate-report:
+    name: 📊 Generar Reporte
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.action == 'generate-report'
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      
+      - name: Generar Reporte OKR
+        run: |
+          python scripts/generate-okr-report.py
+      
+      - name: Commit Reporte
+        run: |
+          git config --local user.email "actions@github.com"
+          git config --local user.name "GitHub Actions"
+          git add okr-system/reports/
+          git commit -m "📊 Reporte OKR actualizado - $(date +'%Y-%m-%d')"
+          git push

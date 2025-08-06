@@ -1,0 +1,149 @@
+name: ✅ Tarea Growth
+description: Crear una tarea específica del equipo Growth
+title: "[TASK] "
+labels: ["task", "growth"]
+projects:
+  - ColombiaTours-Travel/3
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## ✅ Nueva Tarea Growth
+        Use este template para tareas operativas del día a día.
+
+  - type: input
+    id: iniciativa_relacionada
+    attributes:
+      label: 💡 Iniciativa Relacionada
+      description: Issue de la iniciativa padre (opcional)
+      placeholder: "#789"
+
+  - type: dropdown
+    id: categoria
+    attributes:
+      label: 📂 Categoría
+      options:
+        - 📊 Analytics/Reporting
+        - 🔍 SEO
+        - 💰 SEM/Ads
+        - 📝 Content
+        - 🎨 Design
+        - 💻 Development
+        - 📧 Email Marketing
+        - 🧪 A/B Testing
+        - 🔧 Technical/Config
+        - 📚 Documentation
+      default: 0
+    validations:
+      required: true
+
+  - type: input
+    id: titulo_tarea
+    attributes:
+      label: 📝 Título de la Tarea
+      placeholder: "Configurar tracking de eventos en GA4 para checkout"
+    validations:
+      required: true
+
+  - type: textarea
+    id: descripcion
+    attributes:
+      label: 📋 Descripción
+      description: Qué hay que hacer específicamente
+      placeholder: |
+        **Objetivo:**
+        
+        **Acciones a realizar:**
+        
+        **Criterio de aceptación:**
+    validations:
+      required: true
+
+  - type: dropdown
+    id: prioridad
+    attributes:
+      label: 🚨 Prioridad
+      options:
+        - 🔴 P0 - Urgente (Hoy)
+        - 🟠 P1 - Alta (Esta semana)
+        - 🟡 P2 - Media (Este sprint)
+        - 🟢 P3 - Baja (Backlog)
+      default: 1
+    validations:
+      required: true
+
+  - type: dropdown
+    id: estimacion
+    attributes:
+      label: ⏱️ Estimación
+      options:
+        - 15 minutos
+        - 30 minutos
+        - 1 hora
+        - 2 horas
+        - 4 horas
+        - 1 día
+        - 2-3 días
+        - 1 semana
+      default: 2
+    validations:
+      required: true
+
+  - type: input
+    id: asignado
+    attributes:
+      label: 👤 Asignado a
+      placeholder: "@team-member"
+    validations:
+      required: true
+
+  - type: input
+    id: fecha_entrega
+    attributes:
+      label: 📅 Fecha de Entrega
+      placeholder: "2025-01-10"
+
+  - type: checkboxes
+    id: tipo_tarea
+    attributes:
+      label: 🏷️ Tipo de Tarea
+      options:
+        - label: 🐛 Bug Fix
+        - label: ✨ Nueva Funcionalidad  
+        - label: 🔧 Configuración
+        - label: 📊 Análisis/Reporte
+        - label: 📝 Documentación
+        - label: 🧪 Experimento
+
+  - type: textarea
+    id: checklist
+    attributes:
+      label: ✅ Checklist
+      description: Subtareas a completar
+      value: |
+        - [ ] 
+        - [ ] 
+        - [ ] 
+
+  - type: textarea
+    id: definicion_done
+    attributes:
+      label: ✔️ Definition of Done
+      description: Cuándo consideramos la tarea completa
+      placeholder: |
+        - Código/cambios implementados
+        - Testing completado
+        - Documentación actualizada
+        - Métricas configuradas
+
+  - type: textarea
+    id: notas
+    attributes:
+      label: 📝 Notas Adicionales
+      description: Enlaces, referencias, contexto adicional
+      placeholder: |
+        Links relevantes:
+        - 
+        
+        Documentación:
+        - 

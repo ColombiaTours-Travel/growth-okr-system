@@ -1,0 +1,205 @@
+name: 💡 Iniciativa Growth
+description: Crear una nueva iniciativa para alcanzar un Key Result
+title: "[INIT] "
+labels: ["iniciativa", "growth"]
+projects:
+  - ColombiaTours-Travel/3
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## 💡 Nueva Iniciativa Growth
+        Las iniciativas son proyectos o acciones específicas para alcanzar los Key Results.
+
+  - type: input
+    id: kr_relacionado
+    attributes:
+      label: 📊 Key Result Relacionado
+      description: Issue del KR al que contribuye esta iniciativa
+      placeholder: "#456"
+    validations:
+      required: true
+
+  - type: input
+    id: titulo
+    attributes:
+      label: 📝 Título de la Iniciativa
+      description: Nombre claro y descriptivo
+      placeholder: "Implementar estrategia de contenido localizado para México"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: tipo_iniciativa
+    attributes:
+      label: 🏷️ Tipo de Iniciativa
+      options:
+        - 🔧 Técnica/Desarrollo
+        - 📝 Contenido
+        - 📊 Analytics/Data
+        - 🎨 Diseño/UX
+        - 📢 Marketing/Campaigns
+        - 🤝 Partnerships
+        - 🧪 Experimentación/Testing
+        - 📚 Documentación/Proceso
+      default: 0
+    validations:
+      required: true
+
+  - type: dropdown
+    id: impacto_esperado
+    attributes:
+      label: 💥 Impacto Esperado
+      description: Nivel de impacto en el KR
+      options:
+        - Alto (>30% del objetivo)
+        - Medio (10-30% del objetivo)
+        - Bajo (<10% del objetivo)
+        - Experimental (Desconocido)
+      default: 1
+    validations:
+      required: true
+
+  - type: dropdown
+    id: esfuerzo
+    attributes:
+      label: ⏱️ Esfuerzo Estimado
+      description: Tiempo y recursos necesarios
+      options:
+        - XS - 1-2 días
+        - S - 3-5 días
+        - M - 1-2 semanas
+        - L - 3-4 semanas
+        - XL - >1 mes
+      default: 2
+    validations:
+      required: true
+
+  - type: textarea
+    id: descripcion
+    attributes:
+      label: 📋 Descripción Detallada
+      description: Explique qué se va a hacer y por qué
+      placeholder: |
+        **Contexto:**
+        
+        **Qué vamos a hacer:**
+        
+        **Por qué es importante:**
+        
+        **Resultado esperado:**
+    validations:
+      required: true
+
+  - type: textarea
+    id: plan_accion
+    attributes:
+      label: 📝 Plan de Acción
+      description: Pasos específicos para ejecutar la iniciativa
+      value: |
+        - [ ] Fase 1: Investigación y análisis
+          - [ ] 
+          - [ ] 
+        
+        - [ ] Fase 2: Implementación
+          - [ ] 
+          - [ ] 
+        
+        - [ ] Fase 3: Medición y optimización
+          - [ ] 
+          - [ ] 
+    validations:
+      required: true
+
+  - type: textarea
+    id: metricas_exito
+    attributes:
+      label: 📊 Métricas de Éxito
+      description: Cómo mediremos el éxito de esta iniciativa
+      placeholder: |
+        - Métrica principal: 
+        - Métricas secundarias:
+        - Método de medición:
+
+  - type: input
+    id: fecha_inicio
+    attributes:
+      label: 📅 Fecha de Inicio
+      placeholder: "2025-01-15"
+    validations:
+      required: true
+
+  - type: input
+    id: fecha_fin
+    attributes:
+      label: 📅 Fecha de Finalización Estimada
+      placeholder: "2025-02-15"
+    validations:
+      required: true
+
+  - type: input
+    id: owner
+    attributes:
+      label: 👤 Owner
+      description: Responsable principal de la iniciativa
+      placeholder: "@content-lead"
+    validations:
+      required: true
+
+  - type: input
+    id: equipo
+    attributes:
+      label: 👥 Equipo Involucrado
+      description: Otros miembros del equipo
+      placeholder: "@seo-lead, @designer, @dev-team"
+
+  - type: textarea
+    id: recursos
+    attributes:
+      label: 🛠️ Recursos Necesarios
+      description: Herramientas, presupuesto, assets
+      placeholder: |
+        - Herramientas: 
+        - Presupuesto: 
+        - Assets/Materiales:
+        - Tiempo del equipo:
+
+  - type: textarea
+    id: riesgos
+    attributes:
+      label: ⚠️ Riesgos y Mitigación
+      description: Posibles problemas y cómo los evitaremos
+      placeholder: |
+        **Riesgo 1:**
+        - Probabilidad: Alta/Media/Baja
+        - Impacto: Alto/Medio/Bajo
+        - Mitigación: 
+
+  - type: dropdown
+    id: prioridad
+    attributes:
+      label: 🚨 Prioridad
+      options:
+        - P0 - Crítica (Hacer ahora)
+        - P1 - Alta (Esta semana)
+        - P2 - Media (Este mes)
+        - P3 - Baja (Este trimestre)
+      default: 1
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: checklist_inicio
+    attributes:
+      label: ✅ Checklist Pre-Inicio
+      options:
+        - label: KR claramente definido
+          required: true
+        - label: Recursos asignados
+          required: true
+        - label: Equipo informado
+          required: true
+        - label: Métricas de baseline capturadas
+          required: false
+        - label: Stakeholders alineados
+          required: false

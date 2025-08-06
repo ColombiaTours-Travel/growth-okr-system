@@ -1,0 +1,202 @@
+name: 📊 Key Result
+description: Crear un resultado clave para un objetivo existente
+title: "[KR] "
+labels: ["okr", "key-result"]
+assignees:
+  - yeison-gomez
+projects:
+  - ColombiaTours-Travel/1
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## 📊 Nuevo Key Result
+        Los Key Results deben ser específicos, medibles, alcanzables, relevantes y con tiempo definido (SMART).
+
+  - type: input
+    id: objetivo_relacionado
+    attributes:
+      label: 🎯 Objetivo Relacionado
+      description: Número del issue del objetivo al que pertenece este KR
+      placeholder: "#123"
+    validations:
+      required: true
+
+  - type: input
+    id: nombre_kr
+    attributes:
+      label: 📝 Nombre del Key Result
+      description: Descripción corta y clara del resultado clave
+      placeholder: "Aumentar tráfico orgánico internacional a 75K sesiones/mes"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: tipo_metrica
+    attributes:
+      label: 📈 Tipo de Métrica
+      description: Tipo de medición para este KR
+      options:
+        - Número absoluto
+        - Porcentaje
+        - Ratio/Tasa
+        - Binario (Sí/No)
+        - Score (1-10)
+        - Moneda (USD)
+      default: 0
+    validations:
+      required: true
+
+  - type: input
+    id: metrica_actual
+    attributes:
+      label: 📊 Métrica Actual (Baseline)
+      description: Valor actual de la métrica
+      placeholder: "50,000"
+    validations:
+      required: true
+
+  - type: input
+    id: metrica_target
+    attributes:
+      label: 🎯 Target Q1
+      description: Valor objetivo para el trimestre
+      placeholder: "75,000"
+    validations:
+      required: true
+
+  - type: textarea
+    id: formula_calculo
+    attributes:
+      label: 🧮 Fórmula de Cálculo
+      description: Explique cómo se calcula esta métrica
+      placeholder: |
+        Sesiones orgánicas mensuales = 
+        Suma de sesiones con source/medium = "google/organic" + "bing/organic"
+        Filtrado por: País != Colombia
+    validations:
+      required: true
+
+  - type: dropdown
+    id: fuente_datos
+    attributes:
+      label: 📊 Fuente de Datos
+      description: De dónde se obtiene esta métrica
+      options:
+        - Google Analytics 4
+        - Google Search Console
+        - Supabase/CRM
+        - Mixpanel
+        - Hotjar
+        - Manual
+        - Múltiples fuentes
+      default: 0
+    validations:
+      required: true
+
+  - type: dropdown
+    id: frecuencia_medicion
+    attributes:
+      label: 📅 Frecuencia de Medición
+      description: Cada cuánto se actualiza esta métrica
+      options:
+        - Diario
+        - Semanal
+        - Quincenal
+        - Mensual
+        - Trimestral
+      default: 1
+    validations:
+      required: true
+
+  - type: textarea
+    id: milestones
+    attributes:
+      label: 🏁 Milestones Mensuales
+      description: Defina targets intermedios
+      value: |
+        **Enero 2025:**
+        - Target: 
+        - Actual: 
+        
+        **Febrero 2025:**
+        - Target: 
+        - Actual: 
+        
+        **Marzo 2025:**
+        - Target: 
+        - Actual: 
+    validations:
+      required: true
+
+  - type: input
+    id: owner
+    attributes:
+      label: 👤 Responsable del KR
+      description: GitHub username del responsable
+      placeholder: "@analytics-lead"
+    validations:
+      required: true
+
+  - type: textarea
+    id: iniciativas_kr
+    attributes:
+      label: 💡 Iniciativas para este KR
+      description: Acciones específicas para lograr este resultado
+      placeholder: |
+        1. Optimización técnica SEO
+        2. Creación de contenido localizado
+        3. Campaña de link building
+      value: |
+        1. 
+        2. 
+        3. 
+
+  - type: dropdown
+    id: estado_inicial
+    attributes:
+      label: 🚦 Estado Inicial
+      description: Estado actual del KR
+      options:
+        - 🟢 On Track (Bien encaminado)
+        - 🟡 At Risk (En riesgo)
+        - 🔴 Off Track (Fuera de objetivo)
+        - ⚪ Not Started (No iniciado)
+      default: 3
+    validations:
+      required: true
+
+  - type: textarea
+    id: criterios_exito
+    attributes:
+      label: ✅ Criterios de Éxito
+      description: Qué consideramos como éxito para este KR
+      placeholder: |
+        - Alcanzar 75K sesiones orgánicas internacionales
+        - Mantener tasa de rebote < 60%
+        - Conseguir al menos 30% de tráfico de USA/España/México
+
+  - type: textarea
+    id: dependencias
+    attributes:
+      label: 🔗 Dependencias
+      description: De qué depende el éxito de este KR
+      placeholder: |
+        - Implementación de cambios técnicos por Dev team
+        - Presupuesto para herramientas SEO
+        - Contenido del equipo de Content
+
+  - type: checkboxes
+    id: configuracion
+    attributes:
+      label: ⚙️ Configuración
+      description: Confirme la configuración
+      options:
+        - label: Acceso a fuente de datos configurado
+          required: true
+        - label: Dashboard de tracking creado
+          required: true
+        - label: Automatización de reporte configurada
+          required: false
+        - label: Alertas configuradas (si métrica cae)
+          required: false

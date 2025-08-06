@@ -1,0 +1,174 @@
+name: 🎯 OKR - Objetivo Trimestral
+description: Crear un nuevo objetivo para el trimestre
+title: "[OKR-OBJ Q1] "
+labels: ["okr", "objetivo", "q1-2025"]
+assignees:
+  - yeison-gomez
+projects:
+  - ColombiaTours-Travel/1
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## 🎯 Nuevo Objetivo OKR
+        Use este template para crear un objetivo trimestral. Los objetivos deben ser inspiradores, medibles y alcanzables.
+
+  - type: dropdown
+    id: trimestre
+    attributes:
+      label: 📅 Trimestre
+      description: Seleccione el trimestre para este objetivo
+      options:
+        - Q1 2025 (Ene-Mar)
+        - Q2 2025 (Abr-Jun)
+        - Q3 2025 (Jul-Sep)
+        - Q4 2025 (Oct-Dic)
+      default: 0
+    validations:
+      required: true
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: 🏢 Área de Growth
+      description: Área principal responsable del objetivo
+      options:
+        - SEO - Tráfico Orgánico
+        - SEM/Ads - Paid Media
+        - CRO - Conversión
+        - Analytics - Data & Insights
+        - Content - Contenido
+        - Email - Email Marketing
+        - Partnerships - Alianzas
+      default: 0
+    validations:
+      required: true
+
+  - type: textarea
+    id: objetivo
+    attributes:
+      label: 📝 Objetivo
+      description: Describa el objetivo de forma clara e inspiradora
+      placeholder: |
+        Ejemplo: "Dominar el tráfico orgánico internacional posicionando a Colombiatours como el líder en turismo receptivo"
+      value: |
+        **Objetivo:**
+        
+        **¿Por qué es importante?**
+        
+        **Impacto esperado:**
+    validations:
+      required: true
+
+  - type: textarea
+    id: key_results
+    attributes:
+      label: 📊 Key Results Propuestos
+      description: Liste 3-5 resultados clave medibles
+      placeholder: |
+        KR1: Aumentar tráfico orgánico de 50K a 75K sesiones/mes
+        KR2: Posicionar 25 keywords en Top 3
+        KR3: Mejorar CTR de 2.5% a 4.5%
+      value: |
+        **KR1:** 
+        - Métrica actual: 
+        - Target Q1: 
+        
+        **KR2:** 
+        - Métrica actual: 
+        - Target Q1: 
+        
+        **KR3:** 
+        - Métrica actual: 
+        - Target Q1: 
+    validations:
+      required: true
+
+  - type: dropdown
+    id: prioridad
+    attributes:
+      label: 🚨 Prioridad
+      description: Nivel de prioridad del objetivo
+      options:
+        - P0 - Crítica (Bloqueante)
+        - P1 - Alta (Este trimestre)
+        - P2 - Media (Importante)
+        - P3 - Baja (Nice to have)
+      default: 1
+    validations:
+      required: true
+
+  - type: input
+    id: owner
+    attributes:
+      label: 👤 Owner Principal
+      description: GitHub username del responsable principal
+      placeholder: "@yeison-gomez"
+    validations:
+      required: true
+
+  - type: input
+    id: colaboradores
+    attributes:
+      label: 👥 Colaboradores
+      description: Otros miembros del equipo involucrados
+      placeholder: "@seo-lead, @analytics-lead"
+
+  - type: textarea
+    id: iniciativas
+    attributes:
+      label: 💡 Iniciativas Principales
+      description: Liste las iniciativas clave para lograr este objetivo
+      placeholder: |
+        - Auditoría SEO técnica completa
+        - Estrategia de contenido por país
+        - Campaña de link building internacional
+      value: |
+        1. 
+        2. 
+        3. 
+        4. 
+        5. 
+
+  - type: textarea
+    id: recursos
+    attributes:
+      label: 🛠️ Recursos Necesarios
+      description: Recursos, herramientas o presupuesto requerido
+      placeholder: |
+        - Herramienta: Ahrefs/SEMrush
+        - Presupuesto: $5,000 USD
+        - Equipo: 2 SEO specialists
+
+  - type: textarea
+    id: riesgos
+    attributes:
+      label: ⚠️ Riesgos y Dependencias
+      description: Identifique posibles bloqueadores o riesgos
+      placeholder: |
+        - Dependencia del equipo de desarrollo para implementaciones técnicas
+        - Riesgo de cambios en algoritmo de Google
+
+  - type: checkboxes
+    id: tracking
+    attributes:
+      label: 📈 Configuración de Tracking
+      description: Confirme la configuración de medición
+      options:
+        - label: Google Analytics configurado para medir KRs
+          required: true
+        - label: Dashboard en GitHub Projects creado
+          required: true
+        - label: Alertas automáticas configuradas
+          required: false
+        - label: Reporte semanal automatizado
+          required: false
+
+  - type: input
+    id: fecha_revision
+    attributes:
+      label: 📅 Fecha Primera Revisión
+      description: Fecha para la primera revisión de progreso
+      placeholder: "2025-01-15"
+    validations:
+      required: true
